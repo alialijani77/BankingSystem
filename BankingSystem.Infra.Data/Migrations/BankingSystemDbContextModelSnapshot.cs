@@ -30,6 +30,9 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CustomerId"));
 
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -40,6 +43,9 @@ namespace BankingSystem.Infra.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -60,10 +66,17 @@ namespace BankingSystem.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("StateId")
+                        .HasColumnType("int");
+
                     b.Property<long>("TotalAmount")
                         .HasColumnType("bigint");
 
                     b.HasKey("CustomerId");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("StateId");
 
                     b.ToTable("Customers");
                 });
@@ -78,8 +91,8 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int?>("BranchId")
                         .IsRequired()
@@ -87,8 +100,8 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.Property<string>("CardNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CardPassword")
                         .HasColumnType("int");
@@ -99,69 +112,83 @@ namespace BankingSystem.Infra.Data.Migrations
                     b.Property<long>("CreateUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("CustomerId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Cvv2")
                         .HasColumnType("int");
 
                     b.Property<int>("DepositFacilityPoints")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("DepositId")
                         .HasColumnType("int");
 
                     b.Property<int>("DepositLotteryPoints")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
-                    b.Property<string>("ExpDate")
+                    b.Property<int>("DepositToAccountCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("ExpYear")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Expmonth")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Otp")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("0");
 
                     b.Property<string>("Shaba")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<long>("TotaAccountBalance")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("WithdrawToAccountCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.HasKey("OpenAccountId");
 
                     b.HasIndex("BranchId");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DepositId");
 
                     b.ToTable("OpenAccounts");
                 });
 
-            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.Customer.OpenAccountCustomer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("OpenAccountId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("OpenAccountId");
-
-                    b.ToTable("OpenAccountCustomers");
-                });
-
             modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.Permission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PermissionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionId"));
 
                     b.Property<long>("Count")
-                        .HasColumnType("bigint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -171,15 +198,18 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.Property<string>("EnName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FaName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("PermissionId");
 
                     b.ToTable("Permissions");
                 });
@@ -192,17 +222,7 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserId"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Avatar")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("BranchId")
-                        .IsRequired()
+                    b.Property<int>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
@@ -215,6 +235,12 @@ namespace BankingSystem.Infra.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Key")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -234,18 +260,111 @@ namespace BankingSystem.Infra.Data.Migrations
                     b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("UserId");
 
                     b.HasIndex("BranchId");
 
+                    b.HasIndex("Key");
+
                     b.HasIndex("PermissionId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.UserKeyValue", b =>
+                {
+                    b.Property<int>("Key")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Key"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("UserKeyValues");
+
+                    b.HasData(
+                        new
+                        {
+                            Key = 1,
+                            Value = "PhoneNumber"
+                        },
+                        new
+                        {
+                            Key = 2,
+                            Value = "Avatar"
+                        });
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.UserProfile", b =>
+                {
+                    b.Property<long>("UserProfileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserProfileId"));
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreateUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Key")
+                        .HasColumnType("int");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserProfileId");
+
+                    b.HasIndex("Key");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserProfiles");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.UserProfileKeyValue", b =>
+                {
+                    b.Property<int>("Key")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Key"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("UserProfileKeyValues");
+
+                    b.HasData(
+                        new
+                        {
+                            Key = 1,
+                            Value = "Address"
+                        });
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Branch.Branch", b =>
@@ -271,10 +390,8 @@ namespace BankingSystem.Infra.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -283,19 +400,81 @@ namespace BankingSystem.Infra.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<int>("CustomerCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool>("IsDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("StateId")
                         .HasColumnType("int");
 
-                    b.Property<string>("State")
+                    b.Property<long>("TotalAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.HasKey("BranchId");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Branches");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Common.State", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StateId"));
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreateUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<long>("TotalAmount")
-                        .HasColumnType("bigint");
+                    b.HasKey("StateId");
 
-                    b.HasKey("BranchId");
+                    b.HasIndex("ParentId");
 
-                    b.ToTable("Branches");
+                    b.ToTable("States");
+
+                    b.HasData(
+                        new
+                        {
+                            StateId = 1,
+                            CreateDate = new DateTime(2023, 8, 2, 10, 19, 11, 782, DateTimeKind.Local).AddTicks(9893),
+                            CreateUserId = 0L,
+                            IsDelete = false,
+                            Title = "تهران"
+                        },
+                        new
+                        {
+                            StateId = 2,
+                            CreateDate = new DateTime(2023, 8, 2, 10, 19, 11, 782, DateTimeKind.Local).AddTicks(9918),
+                            CreateUserId = 0L,
+                            IsDelete = false,
+                            ParentId = 1,
+                            Title = "شهر تهران"
+                        });
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Deposit.Deposit", b =>
@@ -313,10 +492,14 @@ namespace BankingSystem.Infra.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<int>("DepositDailyPointsRate")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("DepositFacilityPointsRate")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("DepositInterestRate")
                         .HasColumnType("int");
@@ -326,9 +509,63 @@ namespace BankingSystem.Infra.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("DepositId");
 
                     b.ToTable("Deposits");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Transaction.Transaction", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("DebugTag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DstCardNumber")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<DateTime>("Dt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SrcCardNumber")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<int>("TrnSeq")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.Customer.Customer", b =>
+                {
+                    b.HasOne("BankingSystem.Domain.Entities.Common.State", "City")
+                        .WithMany("CustomerCities")
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("BankingSystem.Domain.Entities.Common.State", "State")
+                        .WithMany("CustomerStates")
+                        .HasForeignKey("StateId");
+
+                    b.Navigation("City");
+
+                    b.Navigation("State");
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Account.Customer.OpenAccount", b =>
@@ -337,36 +574,28 @@ namespace BankingSystem.Infra.Data.Migrations
                         .WithMany("OpenAccounts")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("BranchId");
+
+                    b.HasOne("BankingSystem.Domain.Entities.Account.Customer.Customer", "Customer")
+                        .WithMany("OpenAccounts")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("CustomerId");
 
                     b.HasOne("BankingSystem.Domain.Entities.Deposit.Deposit", "Deposit")
                         .WithMany("OpenAccounts")
                         .HasForeignKey("DepositId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("DepositId");
 
                     b.Navigation("Branch");
 
-                    b.Navigation("Deposit");
-                });
-
-            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.Customer.OpenAccountCustomer", b =>
-                {
-                    b.HasOne("BankingSystem.Domain.Entities.Account.Customer.Customer", "Customer")
-                        .WithMany("OpenAccountCustomers")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BankingSystem.Domain.Entities.Account.Customer.OpenAccount", "OpenAccount")
-                        .WithMany("OpenAccountCustomers")
-                        .HasForeignKey("OpenAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Customer");
 
-                    b.Navigation("OpenAccount");
+                    b.Navigation("Deposit");
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.User", b =>
@@ -374,6 +603,12 @@ namespace BankingSystem.Infra.Data.Migrations
                     b.HasOne("BankingSystem.Domain.Entities.Branch.Branch", "Branch")
                         .WithMany("Users")
                         .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BankingSystem.Domain.Entities.Account.User.UserKeyValue", "UserKeyValue")
+                        .WithMany("Users")
+                        .HasForeignKey("Key")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -386,16 +621,56 @@ namespace BankingSystem.Infra.Data.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("Permission");
+
+                    b.Navigation("UserKeyValue");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.UserProfile", b =>
+                {
+                    b.HasOne("BankingSystem.Domain.Entities.Account.User.UserProfileKeyValue", "UserProfileKeyValue")
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("Key")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BankingSystem.Domain.Entities.Account.User.User", "User")
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserProfileKeyValue");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Branch.Branch", b =>
+                {
+                    b.HasOne("BankingSystem.Domain.Entities.Common.State", "City")
+                        .WithMany("BranchCities")
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("BankingSystem.Domain.Entities.Common.State", "State")
+                        .WithMany("BranchStates")
+                        .HasForeignKey("StateId");
+
+                    b.Navigation("City");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Common.State", b =>
+                {
+                    b.HasOne("BankingSystem.Domain.Entities.Common.State", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Account.Customer.Customer", b =>
                 {
-                    b.Navigation("OpenAccountCustomers");
-                });
-
-            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.Customer.OpenAccount", b =>
-                {
-                    b.Navigation("OpenAccountCustomers");
+                    b.Navigation("OpenAccounts");
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.Permission", b =>
@@ -403,11 +678,37 @@ namespace BankingSystem.Infra.Data.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.User", b =>
+                {
+                    b.Navigation("UserProfiles");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.UserKeyValue", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.UserProfileKeyValue", b =>
+                {
+                    b.Navigation("UserProfiles");
+                });
+
             modelBuilder.Entity("BankingSystem.Domain.Entities.Branch.Branch", b =>
                 {
                     b.Navigation("OpenAccounts");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BankingSystem.Domain.Entities.Common.State", b =>
+                {
+                    b.Navigation("BranchCities");
+
+                    b.Navigation("BranchStates");
+
+                    b.Navigation("CustomerCities");
+
+                    b.Navigation("CustomerStates");
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Deposit.Deposit", b =>

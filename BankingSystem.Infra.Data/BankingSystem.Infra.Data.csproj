@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BankingSystem.Domain\BankingSystem.Domain.csproj" />
   </ItemGroup>
 

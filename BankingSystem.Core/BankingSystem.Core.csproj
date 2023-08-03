@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Generator\" />
+    <Folder Include="DTOs\Branch\" />
     <Folder Include="Security\" />
     <Folder Include="Statics\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankingSystem.Domain\BankingSystem.Domain.csproj" />
+    <ProjectReference Include="..\BankingSystem.Infra.Data\BankingSystem.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Implementions\" />
-    <Folder Include="Services\Interfaces\" />
+    <ProjectReference Include="..\BankingSystem.Core\BankingSystem.Core.csproj" />
+    <ProjectReference Include="..\BankingSystem.Domain\BankingSystem.Domain.csproj" />
   </ItemGroup>
 
 </Project>

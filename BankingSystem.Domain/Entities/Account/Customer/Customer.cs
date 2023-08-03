@@ -1,13 +1,8 @@
 ﻿using BankingSystem.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingSystem.Domain.Entities.Account.Customer
 {
-	public class Customer : BaseEntity
+    public class Customer : BaseEntity
 	{
 		#region Properties
 		public long CustomerId { get; set; }
@@ -24,11 +19,17 @@ namespace BankingSystem.Domain.Entities.Account.Customer
 
 		public long TotalAmount { get; set; }
 
-		#endregion
+		public int? StateId { get; set; }
 
-		#region Relations
-		public ICollection<OpenAccountCustomer> OpenAccountCustomers { get; set; }
+        public int? CityId { get; set; }
+        #endregion
 
-		#endregion
-	}
+        #region Relations
+        public State? State { get; set; }
+
+		public State? City { get; set; }
+
+        public ICollection<OpenAccount> OpenAccounts { get; set; }
+        #endregion
+    }
 }

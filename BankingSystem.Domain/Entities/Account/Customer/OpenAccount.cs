@@ -1,10 +1,4 @@
-﻿using BankingSystem.Domain.Entities.Branch;
-using BankingSystem.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BankingSystem.Domain.Entities.Common;
 
 namespace BankingSystem.Domain.Entities.Account.Customer
 {
@@ -19,7 +13,9 @@ namespace BankingSystem.Domain.Entities.Account.Customer
 
 		public int Cvv2 { get; set; }
 
-		public string ExpDate { get; set; }
+		public string Expmonth { get; set; }
+
+		public string ExpYear { get; set; }
 
 		public int CardPassword { get; set; }
 
@@ -28,11 +24,17 @@ namespace BankingSystem.Domain.Entities.Account.Customer
 		public int DepositLotteryPoints { get; set; }
 
 		public int DepositFacilityPoints { get; set; }
+
+        public int WithdrawToAccountCount { get; set; }
+
+        public int DepositToAccountCount { get; set; }
+
+        public long TotaAccountBalance { get; set; }
+
+        public string Otp { get; set; }
         #endregion
 
         #region Relations
-        public ICollection<OpenAccountCustomer> OpenAccountCustomers { get; set; }
-
 		public int? BranchId { get; set; }
 
 		public Branch.Branch Branch { get; set; }
@@ -40,6 +42,9 @@ namespace BankingSystem.Domain.Entities.Account.Customer
 		public int DepositId { get; set; }
 
 		public Deposit.Deposit Deposit { get; set; }
+
+        public long CustomerId { get; set; }
+        public Customer Customer { get; set; }
         #endregion
     }
 }

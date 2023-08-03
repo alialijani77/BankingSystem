@@ -1,13 +1,6 @@
 ﻿using BankingSystem.Domain.Entities.Account.Customer;
 using BankingSystem.Domain.Entities.Account.User;
 using BankingSystem.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace BankingSystem.Domain.Entities.Branch
 {
@@ -20,15 +13,16 @@ namespace BankingSystem.Domain.Entities.Branch
 
 		public string BranchCode { get; set; }
 
+		public int? StateId { get; set; }
+
+		public int? CityId { get; set; }
+
 		public string Address { get; set; }
 
-		public string City { get; set; }
-
-		public string State { get; set; }
-
-        public int CustomerCount { get; set; }
+		public int CustomerCount { get; set; }
 
         public long TotalAmount { get; set; }
+
 
 		#endregion
 
@@ -36,6 +30,10 @@ namespace BankingSystem.Domain.Entities.Branch
 		public ICollection<User> Users { get; set; }
 
 		public ICollection<OpenAccount> OpenAccounts { get; set; }
+
+		public State? State { get; set; }
+
+		public State? City { get; set; }
 
 		#endregion
 	}

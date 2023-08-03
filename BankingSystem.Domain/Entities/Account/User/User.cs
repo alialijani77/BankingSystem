@@ -1,11 +1,4 @@
-﻿using BankingSystem.Domain.Entities.Branch;
-using BankingSystem.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BankingSystem.Domain.Entities.Common;
 
 namespace BankingSystem.Domain.Entities.Account.User
 {
@@ -18,26 +11,27 @@ namespace BankingSystem.Domain.Entities.Account.User
 
 		public string Family { get; set; }
 
-		public string PhoneNumber { get; set; }
-
 		public string Password { get; set; }
 
 		public string NationalCode { get; set; }
 
-		public string Address { get; set; }
-
-		public string Avatar { get; set; }
+		public string Value { get; set; }
 
 		#endregion
 
 		#region Relations
-		public int? BranchId { get; set; }
-
+		public int BranchId { get; set; } = 0;
 		public Branch.Branch Branch { get; set; }
 
 		public int PermissionId { get; set; }
 
 		public Permission Permission { get; set; }
+
+		public ICollection<UserProfile> UserProfiles { get; set; }
+
+		public int Key { get; set; }
+
+		public UserKeyValue UserKeyValue { get; set; }
 
 		#endregion
 

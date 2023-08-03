@@ -1,21 +1,19 @@
 ﻿using BankingSystem.Domain.Entities.Account.Customer;
 using BankingSystem.Domain.Entities.Account.User;
 using BankingSystem.Domain.Entities.Branch;
+using BankingSystem.Domain.Entities.Common;
 using BankingSystem.Domain.Entities.Deposit;
 using BankingSystem.Infra.Data.FluentConfigs.Account.Customer;
 using BankingSystem.Infra.Data.FluentConfigs.Account.User;
 using BankingSystem.Infra.Data.FluentConfigs.Branch;
 using BankingSystem.Infra.Data.FluentConfigs.Deposit;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BankingSystem.Domain.Entities.Transaction;
+using BankingSystem.Infra.Data.FluentConfigs.Transaction;
 
 namespace BankingSystem.Infra.Data.Context
 {
-	public class BankingSystemDbContext : DbContext
+    public class BankingSystemDbContext : DbContext
 	{
 		#region ctor
 		public BankingSystemDbContext(DbContextOptions<BankingSystemDbContext> options) : base(options)
@@ -27,18 +25,25 @@ namespace BankingSystem.Infra.Data.Context
 
 		public DbSet<OpenAccount> OpenAccounts { get; set; }
 
-		public DbSet<OpenAccountCustomer> OpenAccountCustomers { get; set; }
-
 		public DbSet<Permission> Permissions { get; set; }
 
 		public DbSet<Branch> Branches { get; set; }
 
+		public DbSet<UserProfile> UserProfiles { get; set; }
 
 		public DbSet<User> Users { get; set; }
 
-		public DbSet<Deposit> Deposits { get; set; }
+        public DbSet<UserKeyValue> UserKeyValues { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		public DbSet<UserProfileKeyValue> UserProfileKeyValues { get; set; }
+
+        public DbSet<State> States { get; set; }
+
+        public DbSet<Deposit> Deposits { get; set; }
+
+		public DbSet<Transaction> Transactions { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
@@ -46,7 +51,7 @@ namespace BankingSystem.Infra.Data.Context
 
 			modelBuilder.ApplyConfiguration(new OpenAccountConfig());
 
-			modelBuilder.ApplyConfiguration(new OpenAccountCustomerConfig());
+			modelBuilder.ApplyConfiguration(new UserProfileConfig());
 
 			modelBuilder.ApplyConfiguration(new UserConfig());
 
@@ -54,6 +59,15 @@ namespace BankingSystem.Infra.Data.Context
 
 			modelBuilder.ApplyConfiguration(new DepositConfig());
 
+			modelBuilder.ApplyConfiguration(new UserKeyValueConfig());
+
+			modelBuilder.ApplyConfiguration(new UserProfileKeyValueConfig());
+
+			modelBuilder.ApplyConfiguration(new StateConfig());
+
+			modelBuilder.ApplyConfiguration(new PermissionConfig());
+
+			modelBuilder.ApplyConfiguration(new TransactionConfig());
 		}
 	}
 }

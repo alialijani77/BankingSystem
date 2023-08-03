@@ -1,7 +1,9 @@
+using BankingSystem.Core.DTOs.Account.Customer;
 using BankingSystem.Infra.Data.Context;
 using BankingSystem.Infra.Ioc;
 using Microsoft.EntityFrameworkCore;
 
+#region Services
 var builder = WebApplication.CreateBuilder(args);
 
 #region DbContext
@@ -11,8 +13,11 @@ UseSqlServer(builder.Configuration.GetConnectionString("BankingSystemDbContext")
 #region RegisterDependencies
 DependencyContainer.RegisterDependencies(builder.Services);
 #endregion
-// Add services to the container.
+#endregion
 
+#region MiddleWare
+// Add services to the container.
+builder.Services.Configure<OpenAccountDto>(builder.Configuration.GetSection("OpenAccountManagment"));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,3 +39,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+#endregion
+
