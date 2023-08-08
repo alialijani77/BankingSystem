@@ -4,7 +4,11 @@ namespace BankingSystem.CoreBusiness.Services.Interfaces
 {
 	public interface IDepositService
 	{
-		Task<bool> AddDeposit(DepsoitDto depsoitDto);
+		Task<IEnumerable<DepositDto>> GetDeposit();
+
+		Task<DepositDto> GetDepositById(int depositId);
+
+		Task<bool> AddDeposit(AddDepsoitDto depsoitDto);
 
 		Task<bool> UpdateDeposit(UpdateDepsoitDto updateDepsoitDto);
 

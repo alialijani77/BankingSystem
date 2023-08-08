@@ -14,6 +14,11 @@ namespace BankingSystem.Core.Statics
 	{
 		public static TransactionResultDtos Transfer_rq_val(TransactionDtos transactionDtos, OpenAccount openAccount)
 		{
+			if (transactionDtos.Amount > 1000 && string.IsNullOrEmpty(openAccount.Otp))
+			{
+				return new TransactionResultDtos() { Message = "لطفا رمز پویا را وارد نمایید", IsSuccess = false };
+
+			}
 			if (openAccount.TotaAccountBalance < transactionDtos.Amount)
 			{
 				return new TransactionResultDtos() { Message = "موجودی حساب کافی نیست", IsSuccess = false };

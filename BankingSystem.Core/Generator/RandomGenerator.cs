@@ -43,12 +43,18 @@
 			}
 			return shaba;
 		}
-
 		public static int TrnSeq()
 		{
 			Random rnd = new Random();
-			int TrnSeq = rnd.Next(1000, 999999);
-			return TrnSeq;
+			int trnSeq = rnd.Next(1000, 999999);
+			return trnSeq;
+		}
+
+		public static string GetOtp()
+		{
+			Random rnd = new Random();
+			int getOtp = rnd.Next(1000, 9999);
+			return getOtp.ToString();
 		}
 	}
 }

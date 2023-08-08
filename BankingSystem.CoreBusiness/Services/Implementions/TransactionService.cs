@@ -38,7 +38,7 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 		}
 		public async Task<TransactionResultDtos> Transfer(TransactionDtos transactionDtos)
 		{
-			var openAccountBySrcCardNumber = _genericRepositoryOpenAccount.Get(o => o.CardNumber == transactionDtos.SrcCardNumber, null, "Deposit").First();
+			var openAccountBySrcCardNumber = _genericRepositoryOpenAccount.Get(o => o.CardNumber == transactionDtos.SrcCardNumber, null, "Deposit").FirstOrDefault();
 			if (openAccountBySrcCardNumber != null)
 			{
 				var result = TransactionStatics.Transfer_rq_val(transactionDtos, openAccountBySrcCardNumber);
@@ -56,7 +56,7 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 					var customerSrcUpdate = getSrcCustomer.UpdateCustomerAfterSrcTransaction(transactionDtos.Amount);
 					await _genericRepositoryCustomer.Update(customerSrcUpdate);
 					//check openAccountByDstCardNumber
-					var openAccountByDstCardNumber = _genericRepositoryOpenAccount.Get(o => o.CardNumber == transactionDtos.DstCardNumber, null, "Deposit").First();
+					var openAccountByDstCardNumber = _genericRepositoryOpenAccount.Get(o => o.CardNumber == transactionDtos.DstCardNumber, null, "Deposit").FirstOrDefault();
 					if (openAccountByDstCardNumber != null)
 					{
 						//update openAccountByDstCardNumber
@@ -82,7 +82,28 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 				return result;
 			}
 			return new TransactionResultDtos() { Message = "اطلاعات کارت وارد شده اشتباه است.", IsSuccess = false };
+		}
 
+		public async Task<string> GetOtp(GetOtpDtos getOtp)
+		{
+			var openAccountBySrcCardNumber = _genericRepositoryOpenAccount.Get(o => o.CardNumber == getOtp.SrcCardNumber, null, "").FirstOrDefault();
+			if (openAccountBySrcCardNumber != null)
+			{
+				var updateOtp = openAccountBySrcCardNumber.UpdateOtp(getOtp);
+				await _genericRepositoryOpenAccount.Update(updateOtp);
+				return updateOtp.Otp;
+			}
+				return null;
+		}
+
+		public async Task<string> GetShaba(GetShabaDtos getShaba)
+		{
+			var getShabaByCardNumber = _genericRepositoryOpenAccount.Get(o => o.CardNumber == getShaba.CardNumber, null, "").Select(o => o.Shaba).FirstOrDefault();
+			if (getShabaByCardNumber != null)
+			{
+				return getShabaByCardNumber;
+			}
+			return null;
 		}
 	}
 }

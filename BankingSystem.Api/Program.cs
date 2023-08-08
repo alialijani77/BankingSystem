@@ -1,6 +1,11 @@
+
+using BankingSystem.Api.Middleware;
 using BankingSystem.Core.DTOs.Account.Customer;
+using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.Infra.Data.Context;
 using BankingSystem.Infra.Ioc;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 #region Services
@@ -23,6 +28,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.Configure<ApiBehaviorOptions>(
+			  options => options.InvalidModelStateResponseFactory = actionContext =>
+			  {
+				  actionContext.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+				  return new JsonResult(ApiResultDto<string>.BadRequest(actionContext.ModelState));
+			  }
+			  );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,7 +44,18 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseExceptionHandler("/error");
+//app.UseHsts();
+//app.UseStatusCodePages();
+//app.UseExceptionHandler(c => c.Run(async context =>
+//{
+//	var exception = context.Features
+//		.Get<IExceptionHandlerPathFeature>()
+//		.Error;
+//	var response = new { error = exception.Message };
+//	await context.Response.WriteAsJsonAsync(response);
+//}));
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

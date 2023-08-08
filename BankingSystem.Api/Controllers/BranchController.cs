@@ -1,8 +1,6 @@
 ﻿using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.Core.DTOs.Branch;
 using BankingSystem.CoreBusiness.Services.Interfaces;
-using BankingSystem.Domain.Entities.Branch;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.Api.Controllers
@@ -19,42 +17,50 @@ namespace BankingSystem.Api.Controllers
 			_branchService = branchService;
 		}
 		#endregion
+		[HttpGet("GetBranch")]
+		public async Task<IActionResult> GetBranch()
+		{
+			if (ModelState.IsValid)
+			{
+				var branch = await _branchService.GetBranch();
+				if (branch != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<BranchDto>.CreateSuccess(branch));
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
 		[HttpGet("GetBranchById")]
 		public async Task<IActionResult> GetBranchById(int branchId)
 		{
-			var apiResult = new ApiResultDto<BranchDto>();
-
 			if (ModelState.IsValid)
 			{
 				var branch = await _branchService.GetBranchById(branchId);
 				if(branch != null)
 				{
 					Response.StatusCode = StatusCodes.Status200OK;
-					return new JsonResult(apiResult.CreateSuccess(branch));
+					return new JsonResult(ApiResultDto<BranchDto>.CreateSuccess(branch));
 				}
 			}
-			Response.StatusCode = StatusCodes.Status404NotFound;
-			return new JsonResult(apiResult.NotFound(false));
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 
 		[HttpPost("AddBranch")]
 
-		public async Task<IActionResult> AddBranch(BranchDto branchDto)
+		public async Task<IActionResult> AddBranch(AddBranchDto branchDto)
 		{
-			var apiResult = new ApiResultDto<BranchDto>();
 			if (ModelState.IsValid)
 			{
-				var result = await _branchService.AddBranch(branchDto);
-				Response.StatusCode = StatusCodes.Status404NotFound;
-
-				//var res2 = apiResult.CreateSuccess(result);
-				return new JsonResult("ok");
+				if( await _branchService.AddBranch(branchDto))
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
+				}
 			}
-			Response.StatusCode = StatusCodes.Status400BadRequest;
-			//var res3 = apiResult.CreateSuccess(true);
-
-			return new JsonResult("notok");
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 		[HttpPut("UpdateBranch")]
@@ -64,10 +70,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _branchService.UpdateBranch(updateBranchDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 
@@ -78,10 +85,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _branchService.DeleteBranch(branchId))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 	}
 }

@@ -18,21 +18,27 @@ namespace BankingSystem.Core.DTOs.ApiResult
         public int RsCode { get; set; }
 
 
-		public ApiResultDto<T> CreateSuccess<T>(T data, bool IsSuccess = true, string Message = "عملیات با موفقیت انجام شد.")
+		public static ApiResultDto<T> CreateSuccess<T>(T data, bool IsSuccess = true, string Message = "عملیات با موفقیت انجام شد.")
 		{
 			return new ApiResultDto<T>() { Data = data, IsSuccess = IsSuccess, Message = Message,RsCode = (int)ResultRsCode.Success};
 		}
 
-		public ApiResultDto<T> NotFound<T>(T data, bool IsSuccess = false, string Message = "مورد درخواستی یافت نشد")
+		public static ApiResultDto<T> NotFound<T>(T data, bool IsSuccess = false, string Message = "مورد درخواستی یافت نشد")
 		{
 			return new ApiResultDto<T>() { Data = data, IsSuccess = IsSuccess, Message = Message, RsCode = (int)ResultRsCode.NotFound};
+		}
+
+		public static ApiResultDto<T> BadRequest<T>(T data, bool IsSuccess = false, string Message = "اطلاعات وارد شده صحیح نمی باشد.")
+		{
+			return new ApiResultDto<T>() { Data = data, IsSuccess = IsSuccess, Message = Message, RsCode = (int)ResultRsCode.BadRequest };
 		}
 
 		public enum ResultRsCode
 		{
 			Success = 00,
 			NotFound = 404,
-			BadRequest = 401
+			BadRequest = 400,
+			ServerError = 500
 		}
 	}
 }

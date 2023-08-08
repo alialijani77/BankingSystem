@@ -1,4 +1,6 @@
-﻿using BankingSystem.Core.DTOs.Deposit;
+﻿using BankingSystem.Core.DTOs.ApiResult;
+using BankingSystem.Core.DTOs.Branch;
+using BankingSystem.Core.DTOs.Deposit;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,18 +19,49 @@ namespace BankingSystem.Api.Controllers
 		}
 		#endregion
 
+		[HttpGet("GetDeposit")]
+		public async Task<IActionResult> GetDeposit()
+		{
+			if (ModelState.IsValid)
+			{
+				var branch = await _depositService.GetDeposit();
+				if (branch != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<BranchDto>.CreateSuccess(branch));
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
+		[HttpGet("GetDepositById")]
+		public async Task<IActionResult> GetDepositById(int depositId)
+		{
+			if (ModelState.IsValid)
+			{
+				var branch = await _depositService.GetDepositById(depositId);
+				if (branch != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<BranchDto>.CreateSuccess(branch));
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
 		[HttpPost("AddDeposit")]
 
-		public async Task<IActionResult> AddDeposit(DepsoitDto depositDto)
+		public async Task<IActionResult> AddDeposit(AddDepsoitDto depositDto)
 		{
 			if (ModelState.IsValid)
 			{
 				if (await _depositService.AddDeposit(depositDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 		[HttpPut("UpdateDeposit")]
@@ -38,10 +71,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _depositService.UpdateDeposit(updateDepositDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 
@@ -52,10 +86,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _depositService.DeleteDeposit(depositId))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 	}
 }

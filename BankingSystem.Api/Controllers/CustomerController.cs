@@ -1,5 +1,5 @@
 ﻿using BankingSystem.Core.DTOs.Account.Customer;
-using BankingSystem.CoreBusiness.Services.Implementions;
+using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,10 +27,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _customerService.AddCustomer(customerDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 		[HttpPut("UpdateCustomer")]
@@ -40,24 +41,26 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _customerService.UpdateCustomer(updateCustomerDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 
 		[HttpDelete("DeleteCustomer")]
-		public async Task<IActionResult> DeleteCustomer(int customerId)
+		public async Task<IActionResult> DeleteCustomer(long customerId)
 		{
 			if (ModelState.IsValid)
 			{
 				if (await _customerService.DeleteCustomer(customerId))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 		#endregion
 
@@ -70,10 +73,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _customerService.AddOpenAccount(openAccountDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 		[HttpDelete("DeleteOpenAccount")]
@@ -83,10 +87,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _customerService.DeleteOpenAccount(openAccountId))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 	}
 }

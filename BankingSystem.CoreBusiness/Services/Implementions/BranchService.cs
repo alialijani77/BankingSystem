@@ -1,7 +1,5 @@
-﻿using BankingSystem.Core.DTOs.ApiResult;
-using BankingSystem.Core.DTOs.Branch;
+﻿using BankingSystem.Core.DTOs.Branch;
 using BankingSystem.Core.Extensions;
-using BankingSystem.Core.Statics;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using BankingSystem.Domain.Entities.Branch;
 using BankingSystem.Infra.Data.Context;
@@ -20,10 +18,23 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			_genericRepository = new GenericRepository<Branch>(_context);
 		}
 		#endregion
+
 		#region GetBranch
+		public async Task<IEnumerable<BranchDto>> GetBranch()
+		{
+			var branch = _genericRepository.Get(u => u.BranchId != null, null, "State,City");
+			if (branch != null)
+			{
+				return branch.GetBranch();
+			}
+			return null;
+		}
+		#endregion
+
+		#region GetBranchById
 		public async Task<BranchDto> GetBranchById(int branchId)
 		{
-			var branch = await _genericRepository.GetByID(branchId);
+			var branch = _genericRepository.Get(u => u.BranchId == branchId, null, "State,City").FirstOrDefault();
 			if (branch != null)
 			{
 				return branch.GetBranchById();
@@ -33,7 +44,7 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 		#endregion
 
 		#region AddBranch
-		public async Task<bool> AddBranch(BranchDto branchDto)
+		public async Task<bool> AddBranch(AddBranchDto branchDto)
 		{
 			var branch = branchDto.NewBranch();
 			var IsExists = _genericRepository.Get(u => u.BranchCode == branch.BranchCode, null, "");

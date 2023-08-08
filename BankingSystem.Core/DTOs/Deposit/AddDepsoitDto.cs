@@ -2,11 +2,8 @@
 
 namespace BankingSystem.Core.DTOs.Deposit
 {
-	public class UpdateDepsoitDto
+	public class AddDepsoitDto
 	{
-		[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-		public int DepositId { get; set; }
-
 		[MaxLength(20, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
 		[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
 		public string DepositName { get; set; }

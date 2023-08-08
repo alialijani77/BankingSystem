@@ -1,4 +1,5 @@
-﻿using BankingSystem.Core.DTOs.Deposit;
+﻿using BankingSystem.Core.DTOs.Branch;
+using BankingSystem.Core.DTOs.Deposit;
 using BankingSystem.Core.Extensions;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using BankingSystem.Domain.Entities.Deposit;
@@ -20,8 +21,32 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 		}
 		#endregion
 
+		#region GetDeposit
+		public async Task<IEnumerable<DepositDto>> GetDeposit()
+		{
+			var depsoit = _genericRepository.Get(u => u.DepositId != null, null, "");
+			if (depsoit != null)
+			{
+				return depsoit.GetDeposit();
+			}
+			return null;
+		}
+		#endregion
+
+		#region GetDepositById
+		public async Task<DepositDto> GetDepositById(int depositId)
+		{
+			var deposit = await _genericRepository.GetByID(depositId);
+			if (deposit != null)
+			{
+				return deposit.GetDepositById();
+			}
+			return null;
+		}
+		#endregion
+
 		#region AddDeposit
-		public async Task<bool> AddDeposit(DepsoitDto depsoitDto)
+		public async Task<bool> AddDeposit(AddDepsoitDto depsoitDto)
 		{
 			var depsoit = depsoitDto.NewDepsoit();
 			if (depsoit != null)

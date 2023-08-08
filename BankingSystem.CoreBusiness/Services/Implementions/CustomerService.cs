@@ -1,7 +1,9 @@
 ﻿using BankingSystem.Core.DTOs.Account.Customer;
+using BankingSystem.Core.DTOs.Transaction;
 using BankingSystem.Core.Extensions;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using BankingSystem.Domain.Entities.Account.Customer;
+using BankingSystem.Domain.Entities.Branch;
 using BankingSystem.Infra.Data.Context;
 using BankingSystem.Infra.Data.Repositories.GenericRepository;
 using Microsoft.Extensions.Options;
@@ -13,7 +15,8 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 	{
 		private readonly BankingSystemDbContext _context;
 		public  readonly OpenAccountDto _openAccountDto;
-		private readonly Domain.Interfaces.GenericRepository.IGenericRepository<Customer> _genericRepository;
+		private readonly Domain.Interfaces.GenericRepository.IGenericRepository<Branch> _genericRepositoryBranch;
+		private readonly Domain.Interfaces.GenericRepository.IGenericRepository<Customer> _genericRepositoryCustmer;
 		private readonly Domain.Interfaces.GenericRepository.IGenericRepository<OpenAccount> _genericRepositoryOpenAccount;
 
 
@@ -22,7 +25,8 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 		public CustomerService(BankingSystemDbContext context, IOptions<OpenAccountDto> openAccountDto)
 		{
 			_context = context;
-			_genericRepository = new GenericRepository<Customer>(_context);
+			_genericRepositoryBranch = new GenericRepository<Branch>(_context);
+			_genericRepositoryCustmer = new GenericRepository<Customer>(_context);
 			_genericRepositoryOpenAccount = new GenericRepository<OpenAccount>(_context);
 			_openAccountDto = openAccountDto.Value;
 
@@ -41,7 +45,7 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			var customer = customerDto.NewCustomer();
 			if (customer != null)
 			{
-				await _genericRepository.Insert(customer);
+				await _genericRepositoryCustmer.Insert(customer);
 				return true;
 			}
 			return false;
@@ -55,11 +59,11 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			{
 				return false;
 			}
-			var getCustomerById = await _genericRepository.GetByID(updateCustomerDto.CustomerId);
+			var getCustomerById = await _genericRepositoryCustmer.GetByID(updateCustomerDto.CustomerId);
 			if (getCustomerById != null)
 			{
 				var updateCustomer = updateCustomerDto.UpdateCustomer(getCustomerById);
-				await _genericRepository.Update(updateCustomer);
+				await _genericRepositoryCustmer.Update(updateCustomer);
 				return true;
 			}
 			return false;
@@ -67,13 +71,13 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 		#endregion
 
 		#region DeleteCustomer
-		public async Task<bool> DeleteCustomer(int customerId)
+		public async Task<bool> DeleteCustomer(long customerId)
 		{
-			var getcustomerById = await _genericRepository.GetByID(customerId);
+			var getcustomerById = await _genericRepositoryCustmer.GetByID(customerId);
 			if (getcustomerById != null)
 			{
 				var deleteCustomer = getcustomerById.DeleteCustomer();
-				await _genericRepository.Update(deleteCustomer);
+				await _genericRepositoryCustmer.Update(deleteCustomer);
 				return true;
 			}
 			return false;
@@ -94,6 +98,9 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			if (openAccount != null && openAccountByCardNumber == null)
 			{
 				await _genericRepositoryOpenAccount.Insert(openAccount);
+				var branch = await _genericRepositoryBranch.GetByID(openAccount.BranchId);
+				var branchupdate = branch.UpdateTotalAmountOpenAccount(openAccountDto.TotaAccountBalance);
+				await _genericRepositoryBranch.Update(branchupdate);
 				return true;
 			}
 			return false;

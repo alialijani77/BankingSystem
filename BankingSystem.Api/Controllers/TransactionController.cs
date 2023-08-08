@@ -1,8 +1,6 @@
-﻿using BankingSystem.Core.DTOs.Deposit;
+﻿using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.Core.DTOs.Transaction;
-using BankingSystem.CoreBusiness.Services.Implementions;
 using BankingSystem.CoreBusiness.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.Api.Controllers
@@ -13,10 +11,10 @@ namespace BankingSystem.Api.Controllers
 	{
 		private readonly ITransactionService _transactionService;
 
-        public TransactionController(ITransactionService transactionService)
-        {
+		public TransactionController(ITransactionService transactionService)
+		{
 			_transactionService = transactionService;
-        }
+		}
 
 		[HttpPost("AddTransaction")]
 
@@ -24,11 +22,44 @@ namespace BankingSystem.Api.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var TransactionResultDto = await _transactionService.Transfer(transactionDtos);
-				return Ok(TransactionResultDto);
-				
+				var transactionResultDto = await _transactionService.Transfer(transactionDtos);
+				Response.StatusCode = StatusCodes.Status200OK;
+				return new JsonResult(ApiResultDto<bool>.CreateSuccess(transactionResultDto.IsSuccess, transactionResultDto.IsSuccess, transactionResultDto.Message));
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
+		[HttpGet("GetOtp")]
+
+		public async Task<IActionResult> GetOtp(GetOtpDtos getOtp)
+		{
+			if (ModelState.IsValid)
+			{
+				var otp = await _transactionService.GetOtp(getOtp);
+				if (otp != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<string>.CreateSuccess(otp));
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+
+		}
+
+		[HttpGet("GetShaba")]
+
+		public async Task<IActionResult> GetShaba(GetShabaDtos getShaba)
+		{
+			if (ModelState.IsValid)
+			{
+				var shaba = await _transactionService.GetShaba(getShaba);
+				if (shaba != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<string>.CreateSuccess(shaba));
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 	}
 }

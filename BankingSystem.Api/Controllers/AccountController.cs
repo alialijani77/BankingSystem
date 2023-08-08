@@ -1,33 +1,34 @@
 ﻿using BankingSystem.Core.DTOs.Account.User;
+using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.Api.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class AccountController : ControllerBase
 	{
 		public readonly IUserService _userService;
 
-        #region ctor
-        public AccountController(IUserService userService)
-        {
-            _userService = userService;
-        }
+		#region ctor
+		public AccountController(IUserService userService)
+		{
+			_userService = userService;
+		}
 		#endregion
 		#region User
 
 		[HttpPost]
 		public async Task<IActionResult> AddUser(UserDto user)
 		{
-			if(ModelState.IsValid)
+			if (ModelState.IsValid)
 			{
 				if (await _userService.AddUser(user))
 				{
 					return Ok();
 				}
-			}		
+			}
 			return BadRequest();
 		}
 
@@ -41,10 +42,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _userService.AddPermission(permissionDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 		[HttpPut("UpdatePermission")]
@@ -54,10 +56,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _userService.UpdatePermission(updatePermissionDto))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 
@@ -68,10 +71,11 @@ namespace BankingSystem.Api.Controllers
 			{
 				if (await _userService.DeletePermission(permissionId))
 				{
-					return Ok();
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 		#endregion
 	}

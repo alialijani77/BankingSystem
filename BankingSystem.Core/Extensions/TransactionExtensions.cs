@@ -7,6 +7,7 @@ using BankingSystem.Domain.Entities.Transaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,6 +52,13 @@ namespace BankingSystem.Core.Extensions
 			customer.TotalAmount += Amount;
 			customer.CreateDate = DateTime.Now;
 			return customer;
+		}
+
+		public static OpenAccount UpdateOtp(this OpenAccount openAccount, GetOtpDtos getOtp)
+		{
+			openAccount.Otp = RandomGenerator.GetOtp();
+			openAccount.CreateDate = DateTime.Now;
+			return openAccount;
 		}
 	}
 }

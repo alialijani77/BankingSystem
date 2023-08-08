@@ -8,7 +8,7 @@ namespace BankingSystem.CoreBusiness.Services.Interfaces
 
 		Task<bool> UpdateCustomer(UpdateCustomerDto updateCustomerDto);
 
-		Task<bool> DeleteCustomer(int customerId);
+		Task<bool> DeleteCustomer(long customerId);
 
 		Task<bool> AddOpenAccount(OpenAccountDto openAccountDto);
 

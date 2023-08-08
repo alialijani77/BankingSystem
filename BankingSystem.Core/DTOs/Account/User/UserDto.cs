@@ -5,12 +5,10 @@ namespace BankingSystem.Core.DTOs.Account.User
 {
 	public class UserDto
 	{
-		[Display(Name = "نام")]
 		[Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
 		[MaxLength(100, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
 		public string Name { get; set; }
 		
-		[Display(Name = "نام خانوادگی")]
 		[Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
 		[MaxLength(100, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
 		public string Family { get; set; }
@@ -25,12 +23,10 @@ namespace BankingSystem.Core.DTOs.Account.User
 		//[RegularExpression(@"^(\+98|0)?9\d{9}$", ErrorMessage = "شماره موبایل وارد شده معتبر نمی باشد .")]
 		//public string PhoneNumber { get; set; }
 
-		[Display(Name = "رمز عبور")]
 		[Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
 		[MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
 		public string Password { get; set; }
 
-		[Display(Name = "کد ملی")]
 		[Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
 		[MaxLength(10, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
 		public string NationalCode { get; set; }

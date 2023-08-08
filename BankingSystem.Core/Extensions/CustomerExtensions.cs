@@ -14,6 +14,7 @@ namespace BankingSystem.Core.Extensions
 			customer.FirstName = customerDto.FirstName;
 			customer.LastName = customerDto.LastName;
 			customer.NationalCode = customerDto.NationalCode;
+			customer.PhoneNumber = customerDto.PhoneNumber;
 			customer.SignatureImage = customerDto.SignatureImage;
 			customer.StateId = customerDto.StateId;
 			customer.CityId = customerDto.CityId;
@@ -25,6 +26,7 @@ namespace BankingSystem.Core.Extensions
 			customer.FirstName = customerDto.FirstName;
 			customer.LastName = customerDto.LastName;
 			customer.NationalCode = customerDto.NationalCode;
+			customer.PhoneNumber = customerDto.PhoneNumber;
 			customer.SignatureImage = customerDto.SignatureImage;
 			customer.StateId = customerDto.StateId;
 			customer.CityId = customerDto.CityId;
@@ -64,7 +66,7 @@ namespace BankingSystem.Core.Extensions
 			openAccount.WithdrawToAccountCount += 1;
 			openAccount.DepositFacilityPoints = (openAccount.WithdrawToAccountCount / 10 == 0) ? openAccount.DepositFacilityPoints += 1 : openAccount.DepositFacilityPoints;
 			openAccount.CreateDate = DateTime.Now;
-
+			openAccount.Otp = "";
 			return openAccount;
 		}
 

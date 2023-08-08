@@ -15,6 +15,7 @@ namespace BankingSystem.Infra.Ioc
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IBranchService, BranchService>();
 			services.AddScoped<ICustomerService, CustomerService>();
+			services.AddScoped<IDepositService, DepositService>();
 			services.AddScoped<ITransactionService, TransactionService>();
 
 			#endregion

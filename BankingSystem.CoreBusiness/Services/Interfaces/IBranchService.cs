@@ -5,9 +5,11 @@ namespace BankingSystem.CoreBusiness.Services.Interfaces
 {
 	public interface IBranchService
 	{
+		Task<IEnumerable<BranchDto>> GetBranch();
+
 		Task<BranchDto> GetBranchById(int branchId);
 
-		Task<bool> AddBranch(BranchDto branchDto);
+		Task<bool> AddBranch(AddBranchDto branchDto);
 
 		Task<bool> UpdateBranch(UpdateBranchDto updateBranchDto);
 
