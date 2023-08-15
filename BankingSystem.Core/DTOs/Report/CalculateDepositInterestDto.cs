@@ -16,5 +16,7 @@ namespace BankingSystem.Core.DTOs.Report
 
 		public int DepositId { get; set; }
 
-	}
+        public int Day { get; set; }
+
+    }
 }

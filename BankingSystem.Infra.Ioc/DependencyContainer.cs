@@ -17,12 +17,11 @@ namespace BankingSystem.Infra.Ioc
 			services.AddScoped<ICustomerService, CustomerService>();
 			services.AddScoped<IDepositService, DepositService>();
 			services.AddScoped<ITransactionService, TransactionService>();
-
+			services.AddScoped<IReportService, ReportService>();
 			#endregion
 			#region Repositories
 			//services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 			#endregion
 		}
 	}
