@@ -1,7 +1,10 @@
 ﻿using BankingSystem.Core.DTOs.Account.User;
 using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.CoreBusiness.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BankingSystem.Api.Controllers
 {
@@ -19,6 +22,34 @@ namespace BankingSystem.Api.Controllers
 		#endregion
 		#region User
 
+		[HttpPost("Login")]
+		public async Task<IActionResult> Login(LoginDto login)
+		{
+			if (ModelState.IsValid)
+			{
+				if (await _userService.CheckForLogin(login))
+				{
+					var user = await _userService.GetUserByNationalCode(login.NationalCode);
+					#region Login User
+
+					var claims = new List<Claim>
+					{
+						new Claim(ClaimTypes.NameIdentifier, user.NationalCode.ToString()),
+					};
+
+					var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+					var principal = new ClaimsPrincipal(identity);
+					var properties = new AuthenticationProperties { IsPersistent = login.RememberMe };
+
+					await HttpContext.SignInAsync(principal, properties);
+
+					#endregion
+					return Ok(login);
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> AddUser(UserDto user)
 		{
@@ -29,7 +60,7 @@ namespace BankingSystem.Api.Controllers
 					return Ok();
 				}
 			}
-			return BadRequest();
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
 		#endregion

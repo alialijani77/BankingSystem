@@ -8,9 +8,9 @@ using BankingSystem.Infra.Data.Repositories.GenericRepository;
 
 namespace BankingSystem.CoreBusiness.Services.Implementions
 {
-    public class UserService : IUserService
-    {
-        //private readonly IUnitOfWork _unitOfWork;
+	public class UserService : IUserService
+	{
+		//private readonly IUnitOfWork _unitOfWork;
 		private readonly BankingSystemDbContext _context;
 		private readonly Domain.Interfaces.GenericRepository.IGenericRepository<User> _genericRepositoryForUser;
 		private readonly Domain.Interfaces.GenericRepository.IGenericRepository<UserProfile> _genericRepositoryForUserProfile;
@@ -29,13 +29,35 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			_genericRepositoryForPermission = new GenericRepository<Permission>(_context);
 		}
 		#endregion
+		public async Task<bool> CheckForLogin(LoginDto login)
+		{
+			var user = _genericRepositoryForUser.Get(u => u.NationalCode.Equals(login.NationalCode) &&
+			u.Password.Equals(login.Password)
+			, null, "").FirstOrDefault();
+			if (user == null)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		public async Task<UserDto> GetUserByNationalCode(string nationalCode)
+		{
+			var user = _genericRepositoryForUser.Get(u => u.NationalCode.Equals(nationalCode)
+			, null, "").FirstOrDefault();
+			if (user == null)
+			{
+				return null;
+			}
+			return user.GetUserDtoForLogin();
+		}
 
 		public async Task<bool> AddUser(UserDto userDto)
-        {
-            foreach (var item in userDto.KeyValues)
-            {
+		{
+			foreach (var item in userDto.KeyValues)
+			{
 				var user = await userDto.NewUser(userDto, item.Key, item.Value);
-				if(user == null)
+				if (user == null)
 				{
 					return false;
 				}
@@ -53,7 +75,7 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			}
 			await _genericRepositoryForUser.CommitAsync();
 			return true;
-        }
+		}
 
 		//public async Task Save()
 		//{
@@ -103,7 +125,14 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			return false;
 		}
 		#endregion
-
+		#region CheckUserPermission
+		public async Task<bool> CheckUserPermission(long permissionId, string userId)
+		{
+			var user = _genericRepositoryForUser.Get(u=>u.NationalCode == userId && u.PermissionId == permissionId);
+			if (!user.Any()) return false;
+			return true;
+		}
+		#endregion
 		#endregion
 	}
 }

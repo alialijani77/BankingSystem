@@ -40,6 +40,13 @@ namespace BankingSystem.Api.Middleware
 						result.RsCode = (int)ResultRsCode.NotFound;
 						context.Response.StatusCode = StatusCodes.Status404NotFound;
 						break;
+					case 403:
+						result.Data = false;
+						result.IsSuccess = false;
+						result.Message = "ForBidden";
+						result.RsCode = (int)ResultRsCode.NotFound;
+						context.Response.StatusCode = StatusCodes.Status403Forbidden;
+						break;
 					default:
 						result.Data = false;
 						result.IsSuccess = false;

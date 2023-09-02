@@ -1,10 +1,17 @@
 ﻿using BankingSystem.Core.DTOs.Account.User;
 using BankingSystem.Domain.Entities.Account.User;
+using System.Security.Claims;
 
 namespace BankingSystem.Core.Extensions
 {
 	public static class UserExtensions
 	{
+		public static string GetUserId(this ClaimsPrincipal claimsPrincipal)
+		{
+			var userId = claimsPrincipal.Claims.SingleOrDefault(u => u.Type == ClaimTypes.NameIdentifier);
+			if (userId == null) return null;
+			return userId.Value;
+		}
 		#region User
 		public static User NewUser(this UserDto userDto, int key, string value)
 		{
@@ -21,6 +28,17 @@ namespace BankingSystem.Core.Extensions
 			user.BranchId = userDto.BranchId;
 			user.PermissionId = userDto.PermissionId;
 			return user;
+		}
+
+		public static UserDto GetUserDtoForLogin(this User user)
+		{
+			var result = new UserDto();
+			result.Name = user.Name;
+			result.Family = user.Family;
+			result.NationalCode = user.NationalCode;
+			result.BranchId = user.BranchId;
+			result.PermissionId = user.PermissionId;
+			return result;
 		}
 		#endregion
 

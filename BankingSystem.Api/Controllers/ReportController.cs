@@ -13,12 +13,12 @@ namespace BankingSystem.Api.Controllers
 	{
 		private readonly IReportService _reportService;
 
-        public ReportController(IReportService reportService)
-        {
-            _reportService = reportService;
-        }
+		public ReportController(IReportService reportService)
+		{
+			_reportService = reportService;
+		}
 
-        [HttpGet("GetCalculateDepositInterest")]
+		[HttpGet("GetCalculateDepositInterest")]
 		public async Task<IActionResult> GetCalculateDepositInterest(CalculateDepositInterestDto calculateDepositInterestDto)
 		{
 			if (ModelState.IsValid)
@@ -28,6 +28,51 @@ namespace BankingSystem.Api.Controllers
 				{
 					Response.StatusCode = StatusCodes.Status200OK;
 					return Ok(calculateDepositResult);
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
+		[HttpGet("GetOpenAccountForDepositLottery")]
+		public async Task<IActionResult> GetOpenAccountForDepositLottery(long minMoneyForDepositLottery, long customerId)
+		{
+			if (ModelState.IsValid)
+			{
+				var OpenAccountForDepositLottery = await _reportService.GetOpenAccountForDepositLottery(minMoneyForDepositLottery, customerId);
+				if (OpenAccountForDepositLottery != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return Ok(OpenAccountForDepositLottery);
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
+		[HttpGet("CalculateOpenAccountDepositLottery")]
+		public async Task<IActionResult> CalculateOpenAccountDepositLottery(long customerId)
+		{
+			if (ModelState.IsValid)
+			{
+				var CalculateOpenAccountDepositLottery = await _reportService.CalculateOpenAccountDepositLottery(customerId);
+				if (CalculateOpenAccountDepositLottery != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return Ok(CalculateOpenAccountDepositLottery);
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
+		[HttpGet("Lottery")]
+		public async Task<IActionResult> Lottery(LotteryDto lotteryDto)
+		{
+			if (ModelState.IsValid)
+			{
+				var WinOpenAccountLottery = await _reportService.Lottery(lotteryDto);
+				if (WinOpenAccountLottery != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return Ok(WinOpenAccountLottery);
 				}
 			}
 			throw new Exception(StatusCodes.Status404NotFound.ToString());
