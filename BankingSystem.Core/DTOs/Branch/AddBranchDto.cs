@@ -21,5 +21,6 @@ namespace BankingSystem.Core.DTOs.Branch
 
 		[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
 		public int? CityId { get; set; }
+
 	}
 }

@@ -1,12 +1,15 @@
-﻿using BankingSystem.Core.DTOs.Account.Customer;
+﻿using BankingSystem.Api.Filter;
+using BankingSystem.Core.DTOs.Account.Customer;
 using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.CoreBusiness.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class CustomerController : ControllerBase
 	{
 		private readonly ICustomerService _customerService;

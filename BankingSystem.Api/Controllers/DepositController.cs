@@ -1,13 +1,17 @@
-﻿using BankingSystem.Core.DTOs.ApiResult;
+﻿using BankingSystem.Api.Filter;
+using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.Core.DTOs.Branch;
 using BankingSystem.Core.DTOs.Deposit;
 using BankingSystem.CoreBusiness.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
+	[PermissionChecker(1)]
 	public class DepositController : ControllerBase
 	{
 		private readonly IDepositService _depositService;

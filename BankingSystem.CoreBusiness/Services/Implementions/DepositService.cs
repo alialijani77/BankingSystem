@@ -1,5 +1,4 @@
-﻿using BankingSystem.Core.DTOs.Branch;
-using BankingSystem.Core.DTOs.Deposit;
+﻿using BankingSystem.Core.DTOs.Deposit;
 using BankingSystem.Core.Extensions;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using BankingSystem.Domain.Entities.Deposit;

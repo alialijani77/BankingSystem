@@ -77,6 +77,18 @@ namespace BankingSystem.CoreBusiness.Services.Implementions
 			return true;
 		}
 
+		public async Task<bool> DeleteUser(long userId)
+		{
+			var getUserById = await _genericRepositoryForUser.GetByID(userId);
+			if (getUserById != null)
+			{
+				var deleteUser = getUserById.DeleteUser();
+				await _genericRepositoryForUser.Update(deleteUser);
+				return true;
+			}
+			return false;
+		}
+
 		//public async Task Save()
 		//{
 		//	//await _unitOfWork.CommitAsync();

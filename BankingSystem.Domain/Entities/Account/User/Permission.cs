@@ -1,6 +1,4 @@
 ﻿using BankingSystem.Domain.Entities.Common;
-using System.ComponentModel.DataAnnotations;
-
 
 namespace BankingSystem.Domain.Entities.Account.User
 {

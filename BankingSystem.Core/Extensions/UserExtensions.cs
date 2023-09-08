@@ -6,7 +6,7 @@ namespace BankingSystem.Core.Extensions
 {
 	public static class UserExtensions
 	{
-		public static string GetUserId(this ClaimsPrincipal claimsPrincipal)
+		public static string GetUSerNationalCode(this ClaimsPrincipal claimsPrincipal)
 		{
 			var userId = claimsPrincipal.Claims.SingleOrDefault(u => u.Type == ClaimTypes.NameIdentifier);
 			if (userId == null) return null;
@@ -41,6 +41,13 @@ namespace BankingSystem.Core.Extensions
 			return result;
 		}
 		#endregion
+
+		public static User DeleteUser(this User user)
+		{
+			user.IsDelete = true;
+			user.CreateDate = DateTime.Now;
+			return user;
+		}
 
 		#region UserProfile
 

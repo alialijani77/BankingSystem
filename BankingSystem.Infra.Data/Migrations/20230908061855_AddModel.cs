@@ -19,7 +19,7 @@ namespace BankingSystem.Infra.Data.Migrations
                 {
                     DepositId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DepositName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DepositName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     DepositInterestRate = table.Column<int>(type: "int", nullable: false),
                     DepositDailyPointsRate = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     DepositFacilityPointsRate = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
@@ -38,8 +38,8 @@ namespace BankingSystem.Infra.Data.Migrations
                 {
                     PermissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FaName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    EnName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FaName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EnName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Count = table.Column<long>(type: "bigint", nullable: false, defaultValue: 0L),
                     CreateUserId = table.Column<long>(type: "bigint", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -122,7 +122,7 @@ namespace BankingSystem.Infra.Data.Migrations
                 {
                     BranchId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BranchName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    BranchName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     BranchCode = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
                     StateId = table.Column<int>(type: "int", nullable: true),
                     CityId = table.Column<int>(type: "int", nullable: true),
@@ -156,9 +156,9 @@ namespace BankingSystem.Infra.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    NationalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    SignatureImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    NationalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    SignatureImage = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     TotalAmount = table.Column<long>(type: "bigint", nullable: false),
                     StateId = table.Column<int>(type: "int", nullable: true),
                     CityId = table.Column<int>(type: "int", nullable: true),
@@ -302,9 +302,18 @@ namespace BankingSystem.Infra.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "PermissionId", "CreateDate", "CreateUserId", "EnName", "FaName", "IsDelete" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 9, 8, 9, 48, 55, 354, DateTimeKind.Local).AddTicks(1091), 1L, "System Manager", "مدیر سیستم", false },
+                    { 2, new DateTime(2023, 9, 8, 9, 48, 55, 354, DateTimeKind.Local).AddTicks(1170), 1L, "user", "کاربر سیستم", false }
+                });
+
+            migrationBuilder.InsertData(
                 table: "States",
                 columns: new[] { "StateId", "CreateDate", "CreateUserId", "IsDelete", "ParentId", "Title" },
-                values: new object[] { 1, new DateTime(2023, 8, 2, 10, 19, 11, 782, DateTimeKind.Local).AddTicks(9893), 0L, false, null, "تهران" });
+                values: new object[] { 1, new DateTime(2023, 9, 8, 9, 48, 55, 353, DateTimeKind.Local).AddTicks(9412), 0L, false, null, "تهران" });
 
             migrationBuilder.InsertData(
                 table: "UserKeyValues",
@@ -323,7 +332,22 @@ namespace BankingSystem.Infra.Data.Migrations
             migrationBuilder.InsertData(
                 table: "States",
                 columns: new[] { "StateId", "CreateDate", "CreateUserId", "IsDelete", "ParentId", "Title" },
-                values: new object[] { 2, new DateTime(2023, 8, 2, 10, 19, 11, 782, DateTimeKind.Local).AddTicks(9918), 0L, false, 1, "شهر تهران" });
+                values: new object[] { 2, new DateTime(2023, 9, 8, 9, 48, 55, 353, DateTimeKind.Local).AddTicks(9456), 0L, false, 1, "شهر تهران" });
+
+            migrationBuilder.InsertData(
+                table: "Branches",
+                columns: new[] { "BranchId", "Address", "BranchCode", "BranchName", "CityId", "CreateDate", "CreateUserId", "CustomerCount", "StateId" },
+                values: new object[] { 1, "تهران", "1", "مرکزی", 2, new DateTime(2023, 9, 8, 9, 48, 55, 343, DateTimeKind.Local).AddTicks(7354), 1L, 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "BranchId", "CreateDate", "CreateUserId", "Family", "IsDelete", "Key", "Name", "NationalCode", "Password", "PermissionId", "Value" },
+                values: new object[] { 1L, 1, new DateTime(2023, 9, 8, 9, 48, 55, 343, DateTimeKind.Local).AddTicks(1829), 0L, "Admin", false, 1, "Admin", "1234567890", "123", 1, "1" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Branches_BranchCode",
+                table: "Branches",
+                column: "BranchCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Branches_CityId",
@@ -341,14 +365,29 @@ namespace BankingSystem.Infra.Data.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customers_CustomerId",
+                table: "Customers",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customers_StateId",
                 table: "Customers",
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deposits_DepositId",
+                table: "Deposits",
+                column: "DepositId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OpenAccounts_BranchId",
                 table: "OpenAccounts",
                 column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenAccounts_CardNumber",
+                table: "OpenAccounts",
+                column: "CardNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenAccounts_CustomerId",
@@ -364,6 +403,16 @@ namespace BankingSystem.Infra.Data.Migrations
                 name: "IX_States_ParentId",
                 table: "States",
                 column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_DstCardNumber",
+                table: "Transactions",
+                column: "DstCardNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_SrcCardNumber",
+                table: "Transactions",
+                column: "SrcCardNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProfiles_Key",
@@ -384,6 +433,11 @@ namespace BankingSystem.Infra.Data.Migrations
                 name: "IX_Users_Key",
                 table: "Users",
                 column: "Key");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_NationalCode",
+                table: "Users",
+                column: "NationalCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_PermissionId",

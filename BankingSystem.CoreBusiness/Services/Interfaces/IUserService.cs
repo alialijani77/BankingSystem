@@ -11,6 +11,8 @@ namespace BankingSystem.CoreBusiness.Services.Interfaces
 
 		Task<bool> AddUser(UserDto userDto);
 
+		Task<bool> DeleteUser(long userId);
+
 		//Task Save();
 		#endregion
 

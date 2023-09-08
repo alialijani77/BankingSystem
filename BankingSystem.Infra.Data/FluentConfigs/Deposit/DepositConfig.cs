@@ -13,6 +13,7 @@ namespace BankingSystem.Infra.Data.FluentConfigs.Deposit
 			builder.Property(d => d.DepositDailyPointsRate).IsRequired().HasDefaultValue(0);
 			builder.Property(d => d.DepositFacilityPointsRate).IsRequired().HasDefaultValue(0);
 			builder.Property(d => d.CreateUserId).IsRequired();
+			builder.HasIndex(d => d.DepositId);
 
 		}
 	}

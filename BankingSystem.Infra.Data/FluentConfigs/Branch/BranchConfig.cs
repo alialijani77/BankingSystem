@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-
 namespace BankingSystem.Infra.Data.FluentConfigs.Branch
 {
 	public class BranchConfig : IEntityTypeConfiguration<BankingSystem.Domain.Entities.Branch.Branch>
@@ -15,6 +14,19 @@ namespace BankingSystem.Infra.Data.FluentConfigs.Branch
 			builder.Property(b => b.CustomerCount).HasDefaultValue(0);
 			builder.Property(b => b.TotalAmount).HasDefaultValue(0);
 			builder.Property(b => b.IsDelete).HasDefaultValue("False");
+			builder.HasIndex(b => b.BranchCode);
+			builder.HasData(new Domain.Entities.Branch.Branch()
+			{
+				BranchId = 1,
+				BranchCode = "1",
+				BranchName = "مرکزی",
+				Address = "تهران",
+				CustomerCount = 1,
+				CityId = 2,
+				StateId = 1,
+				TotalAmount = 0,
+				CreateUserId = 1
+			});
 		}
 	}
 }

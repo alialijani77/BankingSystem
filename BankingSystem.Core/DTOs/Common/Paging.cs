@@ -1,0 +1,65 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace BankingSystem.Core.DTOs.Common
+{
+	public class Paging<T>
+	{
+		public Paging()
+		{
+			CurrentPage = 1;
+			HowManyShowBeforAfter = 3;
+			TakeEntitiy = 5;
+			Entities = new List<T>();
+		}
+		public int CurrentPage { get; set; }
+
+		public int StartPage { get; set; }
+
+		public int EndPage { get; set; }
+
+		public int TotalPage { get; set; }
+
+		public int HowManyShowBeforAfter { get; set; }
+
+		public int TakeEntitiy { get; set; }
+
+		public int SkipEntity { get; set; }
+
+		public int AllCountEntities { get; set; }
+
+		public List<T> Entities { get; set; }
+
+
+		public PagingViewModel GetPaging()
+		{
+			var res = new PagingViewModel();
+			res.CurrentPage = this.CurrentPage;
+			res.StartPage = this.StartPage;
+			res.EndPage = this.EndPage;
+			return res;
+		}
+
+		public async Task SetPaging(IQueryable<T> query)
+		{
+			AllCountEntities = query.Count();
+			TotalPage = (int)Math.Ceiling(AllCountEntities / (double)TakeEntitiy);
+			CurrentPage = CurrentPage < 1 ? 1 : CurrentPage;
+			CurrentPage = CurrentPage > TotalPage ? TotalPage : CurrentPage;
+			StartPage = CurrentPage - HowManyShowBeforAfter < 0 ? 1 : CurrentPage - HowManyShowBeforAfter;
+			EndPage = CurrentPage + HowManyShowBeforAfter > TotalPage ? TotalPage : CurrentPage + HowManyShowBeforAfter;
+			SkipEntity = (CurrentPage - 1) * TakeEntitiy;
+			if (query.Any())
+			{
+				Entities = await query.Skip(SkipEntity).Take(TakeEntitiy).ToListAsync();
+			}
+		}
+	}
+	public class PagingViewModel
+	{
+		public int CurrentPage { get; set; }
+
+		public int StartPage { get; set; }
+
+		public int EndPage { get; set; }
+	}
+}

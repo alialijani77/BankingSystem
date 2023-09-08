@@ -1,6 +1,7 @@
 ﻿using BankingSystem.Api.Filter;
 using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.Core.DTOs.Branch;
+using BankingSystem.Core.Extensions;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,8 @@ namespace BankingSystem.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[PermissionChecker(3)]
+	[Authorize]
+	[PermissionChecker(1)]
 	public class BranchController : ControllerBase
 	{
 		private readonly IBranchService _branchService;
@@ -20,7 +22,6 @@ namespace BankingSystem.Api.Controllers
 			_branchService = branchService;
 		}
 		#endregion
-		[Authorize]
 		[HttpGet("GetBranch")]
 		public async Task<IActionResult> GetBranch()
 		{
@@ -53,6 +54,7 @@ namespace BankingSystem.Api.Controllers
 
 
 		[HttpPost("AddBranch")]
+		[Authorize]
 
 		public async Task<IActionResult> AddBranch(AddBranchDto branchDto)
 		{

@@ -1,5 +1,4 @@
 ﻿using BankingSystem.Core.DTOs.Account.Customer;
-using BankingSystem.Core.DTOs.Transaction;
 using BankingSystem.Core.Extensions;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using BankingSystem.Domain.Entities.Account.Customer;

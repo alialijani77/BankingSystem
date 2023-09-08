@@ -13,7 +13,7 @@ namespace BankingSystem.Infra.Data.FluentConfigs.Account.Customer
 			builder.Property(c => c.NationalCode).IsRequired().HasMaxLength(10);
 			builder.Property(c => c.PhoneNumber).IsRequired().HasMaxLength(15);
 			builder.Property(c => c.SignatureImage).IsRequired().HasMaxLength(250);
-
+			builder.HasIndex(c => c.CustomerId);
 		}
 	}
 }

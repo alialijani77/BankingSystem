@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Infra.Data.Migrations
 {
     [DbContext(typeof(BankingSystemDbContext))]
-    [Migration("20230802064911_AddModel")]
+    [Migration("20230908061855_AddModel")]
     partial class AddModel
     {
         /// <inheritdoc />
@@ -57,17 +57,18 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.Property<string>("NationalCode")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("SignatureImage")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int?>("StateId")
                         .HasColumnType("int");
@@ -78,6 +79,8 @@ namespace BankingSystem.Infra.Data.Migrations
                     b.HasKey("CustomerId");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("StateId");
 
@@ -173,6 +176,8 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.HasIndex("BranchId");
 
+                    b.HasIndex("CardNumber");
+
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("DepositId");
@@ -201,13 +206,13 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.Property<string>("EnName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FaName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
@@ -215,6 +220,28 @@ namespace BankingSystem.Infra.Data.Migrations
                     b.HasKey("PermissionId");
 
                     b.ToTable("Permissions");
+
+                    b.HasData(
+                        new
+                        {
+                            PermissionId = 1,
+                            Count = 0L,
+                            CreateDate = new DateTime(2023, 9, 8, 9, 48, 55, 354, DateTimeKind.Local).AddTicks(1091),
+                            CreateUserId = 1L,
+                            EnName = "System Manager",
+                            FaName = "مدیر سیستم",
+                            IsDelete = false
+                        },
+                        new
+                        {
+                            PermissionId = 2,
+                            Count = 0L,
+                            CreateDate = new DateTime(2023, 9, 8, 9, 48, 55, 354, DateTimeKind.Local).AddTicks(1170),
+                            CreateUserId = 1L,
+                            EnName = "user",
+                            FaName = "کاربر سیستم",
+                            IsDelete = false
+                        });
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.User", b =>
@@ -274,9 +301,28 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.HasIndex("Key");
 
+                    b.HasIndex("NationalCode");
+
                     b.HasIndex("PermissionId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1L,
+                            BranchId = 1,
+                            CreateDate = new DateTime(2023, 9, 8, 9, 48, 55, 343, DateTimeKind.Local).AddTicks(1829),
+                            CreateUserId = 0L,
+                            Family = "Admin",
+                            IsDelete = false,
+                            Key = 1,
+                            Name = "Admin",
+                            NationalCode = "1234567890",
+                            Password = "123",
+                            PermissionId = 1,
+                            Value = "1"
+                        });
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Account.User.UserKeyValue", b =>
@@ -390,8 +436,8 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.Property<string>("BranchName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
@@ -422,11 +468,29 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.HasKey("BranchId");
 
+                    b.HasIndex("BranchCode");
+
                     b.HasIndex("CityId");
 
                     b.HasIndex("StateId");
 
                     b.ToTable("Branches");
+
+                    b.HasData(
+                        new
+                        {
+                            BranchId = 1,
+                            Address = "تهران",
+                            BranchCode = "1",
+                            BranchName = "مرکزی",
+                            CityId = 2,
+                            CreateDate = new DateTime(2023, 9, 8, 9, 48, 55, 343, DateTimeKind.Local).AddTicks(7354),
+                            CreateUserId = 1L,
+                            CustomerCount = 1,
+                            IsDelete = false,
+                            StateId = 1,
+                            TotalAmount = 0L
+                        });
                 });
 
             modelBuilder.Entity("BankingSystem.Domain.Entities.Common.State", b =>
@@ -464,7 +528,7 @@ namespace BankingSystem.Infra.Data.Migrations
                         new
                         {
                             StateId = 1,
-                            CreateDate = new DateTime(2023, 8, 2, 10, 19, 11, 782, DateTimeKind.Local).AddTicks(9893),
+                            CreateDate = new DateTime(2023, 9, 8, 9, 48, 55, 353, DateTimeKind.Local).AddTicks(9412),
                             CreateUserId = 0L,
                             IsDelete = false,
                             Title = "تهران"
@@ -472,7 +536,7 @@ namespace BankingSystem.Infra.Data.Migrations
                         new
                         {
                             StateId = 2,
-                            CreateDate = new DateTime(2023, 8, 2, 10, 19, 11, 782, DateTimeKind.Local).AddTicks(9918),
+                            CreateDate = new DateTime(2023, 9, 8, 9, 48, 55, 353, DateTimeKind.Local).AddTicks(9456),
                             CreateUserId = 0L,
                             IsDelete = false,
                             ParentId = 1,
@@ -509,13 +573,15 @@ namespace BankingSystem.Infra.Data.Migrations
 
                     b.Property<string>("DepositName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.HasKey("DepositId");
+
+                    b.HasIndex("DepositId");
 
                     b.ToTable("Deposits");
                 });
@@ -552,6 +618,10 @@ namespace BankingSystem.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DstCardNumber");
+
+                    b.HasIndex("SrcCardNumber");
 
                     b.ToTable("Transactions");
                 });

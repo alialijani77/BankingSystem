@@ -1,12 +1,8 @@
-
 using BankingSystem.Api.Middleware;
 using BankingSystem.Core.DTOs.Account.Customer;
-using BankingSystem.Core.DTOs.ApiResult;
 using BankingSystem.Infra.Data.Context;
 using BankingSystem.Infra.Ioc;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 #region Services

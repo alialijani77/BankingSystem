@@ -1,5 +1,4 @@
-﻿using BankingSystem.Core.DTOs.ApiResult;
-using BankingSystem.Core.DTOs.Branch;
+﻿using BankingSystem.Core.DTOs.Branch;
 
 namespace BankingSystem.CoreBusiness.Services.Interfaces
 {

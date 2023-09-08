@@ -1,8 +1,4 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
-
-namespace BankingSystem.Core.DTOs.Branch
+﻿namespace BankingSystem.Core.DTOs.Branch
 {
 	public class BranchDto
 	{

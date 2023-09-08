@@ -5,7 +5,8 @@ namespace BankingSystem.Core.DTOs.Account.User
 {
 	public class UserDto
 	{
-		[Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
+        public long UserId { get; set; }
+        [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
 		[MaxLength(100, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
 		public string Name { get; set; }
 		

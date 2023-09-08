@@ -1,6 +1,8 @@
 ﻿using BankingSystem.CoreBusiness.Services.Implementions;
 using BankingSystem.CoreBusiness.Services.Interfaces;
+using BankingSystem.Domain.Interfaces.Report;
 using BankingSystem.Domain.Interfaces.UnitOfWork;
+using BankingSystem.Infra.Data.Repositories.Report;
 using BankingSystem.Infra.Data.Repositories.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +24,8 @@ namespace BankingSystem.Infra.Ioc
 			#region Repositories
 			//services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
+			services.AddScoped<IReportRepository, ReportRepository>();
+
 			#endregion
 		}
 	}

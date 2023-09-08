@@ -5,11 +5,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using BankingSystem.Api.Filter;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankingSystem.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
+	[PermissionChecker(1)]
 	public class AccountController : ControllerBase
 	{
 		public readonly IUserService _userService;
@@ -35,6 +39,7 @@ namespace BankingSystem.Api.Controllers
 					var claims = new List<Claim>
 					{
 						new Claim(ClaimTypes.NameIdentifier, user.NationalCode.ToString()),
+						new Claim(ClaimTypes.UserData, user.UserId.ToString())
 					};
 
 					var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -50,7 +55,7 @@ namespace BankingSystem.Api.Controllers
 			throw new Exception(StatusCodes.Status404NotFound.ToString());
 		}
 
-		[HttpPost]
+		[HttpPost("AddUser")]
 		public async Task<IActionResult> AddUser(UserDto user)
 		{
 			if (ModelState.IsValid)
@@ -58,6 +63,20 @@ namespace BankingSystem.Api.Controllers
 				if (await _userService.AddUser(user))
 				{
 					return Ok();
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
+		[HttpDelete("DeleteUser")]
+		public async Task<IActionResult> DeleteUser(long userId)
+		{
+			if (ModelState.IsValid)
+			{
+				if (await _userService.DeleteUser(userId))
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return new JsonResult(ApiResultDto<bool>.CreateSuccess(true));
 				}
 			}
 			throw new Exception(StatusCodes.Status404NotFound.ToString());

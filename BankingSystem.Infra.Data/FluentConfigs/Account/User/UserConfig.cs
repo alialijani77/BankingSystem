@@ -16,7 +16,20 @@ namespace BankingSystem.Infra.Data.FluentConfigs.Account.User
 			builder.HasOne(u => u.Branch).WithMany(u => u.Users).HasForeignKey("BranchId");
 			builder.HasOne(u => u.Permission).WithMany(u => u.Users).HasForeignKey("PermissionId");
 			builder.HasOne(u => u.UserKeyValue).WithMany(u => u.Users).HasForeignKey("Key");
-
+			builder.HasIndex(u => u.NationalCode);
+			builder.HasData(new Domain.Entities.Account.User.User()
+			{
+				UserId = 1,
+				BranchId = 1,
+				PermissionId = 1,
+				Name = "Admin",
+				Family = "Admin",
+				Password = "123",
+				NationalCode = "1234567890",
+				Value = "1",
+				CreateUserId = 0,
+				Key = 1
+			});
 		}
 	}
 }

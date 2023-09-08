@@ -1,14 +1,13 @@
-﻿using BankingSystem.Core.DTOs.ApiResult;
-using BankingSystem.Core.DTOs.Branch;
-using BankingSystem.Core.DTOs.Report;
+﻿using BankingSystem.Core.DTOs.Report;
 using BankingSystem.CoreBusiness.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class ReportController : ControllerBase
 	{
 		private readonly IReportService _reportService;
@@ -73,6 +72,21 @@ namespace BankingSystem.Api.Controllers
 				{
 					Response.StatusCode = StatusCodes.Status200OK;
 					return Ok(WinOpenAccountLottery);
+				}
+			}
+			throw new Exception(StatusCodes.Status404NotFound.ToString());
+		}
+
+		[HttpGet("Facility")]
+		public async Task<IActionResult> Facility(FacilityResultDto facilityResultDto)
+		{
+			if (ModelState.IsValid)
+			{
+				var facility = await _reportService.Facility(facilityResultDto);
+				if (facility != null)
+				{
+					Response.StatusCode = StatusCodes.Status200OK;
+					return Ok(facility);
 				}
 			}
 			throw new Exception(StatusCodes.Status404NotFound.ToString());

@@ -1,9 +1,4 @@
 ﻿using BankingSystem.Core.DTOs.Report;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingSystem.CoreBusiness.Services.Interfaces
 {
@@ -16,6 +11,8 @@ namespace BankingSystem.CoreBusiness.Services.Interfaces
 		Task<List<CalculateOpenAccountDepositLotteryDto>> CalculateOpenAccountDepositLottery(long customerId);
 		
 		Task<List<LotteryResultDto>> Lottery(LotteryDto lotteryDto);
+
+		Task<FacilityResultDto> Facility(FacilityResultDto facilityResultDto);
 
 	}
 }

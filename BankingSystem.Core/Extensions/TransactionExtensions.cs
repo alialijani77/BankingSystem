@@ -1,15 +1,8 @@
-﻿using BankingSystem.Core.DTOs.Account.Customer;
-using BankingSystem.Core.DTOs.Transaction;
+﻿using BankingSystem.Core.DTOs.Transaction;
 using BankingSystem.Core.Generator;
 using BankingSystem.Domain.Entities.Account.Customer;
 using BankingSystem.Domain.Entities.Branch;
 using BankingSystem.Domain.Entities.Transaction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingSystem.Core.Extensions
 {

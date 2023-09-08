@@ -12,6 +12,9 @@ namespace BankingSystem.Infra.Data.FluentConfigs.Transaction
 			builder.Property(t => t.DstCardNumber).IsRequired().HasMaxLength(16);
 			builder.Property(t => t.Amount).IsRequired();
 			builder.Property(t => t.TrnSeq).IsRequired();
+			builder.HasIndex(t => t.SrcCardNumber);
+			builder.HasIndex(t => t.DstCardNumber);
+
 		}
 	}
 }

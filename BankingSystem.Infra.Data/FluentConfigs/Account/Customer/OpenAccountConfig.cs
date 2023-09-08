@@ -24,6 +24,8 @@ namespace BankingSystem.Infra.Data.FluentConfigs.Account.Customer
 			builder.HasOne(o => o.Deposit).WithMany(o => o.OpenAccounts).HasForeignKey("DepositId").HasConstraintName("DepositId");
 			builder.HasOne(o => o.Branch).WithMany(o => o.OpenAccounts).HasForeignKey("BranchId").HasConstraintName("BranchId");
 			builder.HasOne(o => o.Customer).WithMany(o => o.OpenAccounts).HasForeignKey("CustomerId").HasConstraintName("CustomerId");
+			builder.HasIndex(o => o.CardNumber);
+
 
 		}
 	}

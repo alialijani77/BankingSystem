@@ -1,19 +1,17 @@
 ﻿namespace BankingSystem.Core.DTOs.Report
 {
-	public class GetOpenAccountForDepositLotteryDto
+	public class FacilityDto
 	{
 		public string FirstName { get; set; }
 
 		public string LastName { get; set; }
 
-		public string NationalCode { get; set; }
-
-		public string AccountNumber { get; set; }
-
 		public string CardNumber { get; set; }
 
 		public string Shaba { get; set; }
 
-		public int DepositId { get; set; }
+		public int DepositFacilityPoints { get; set; }
+
+
 	}
 }

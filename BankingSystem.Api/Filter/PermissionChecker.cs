@@ -1,6 +1,5 @@
 ﻿using BankingSystem.CoreBusiness.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc;
 using BankingSystem.Core.Extensions;
 
 namespace BankingSystem.Api.Filter
@@ -17,7 +16,7 @@ namespace BankingSystem.Api.Filter
 		{
 			var userService = (IUserService)context.HttpContext.RequestServices.GetService(typeof(IUserService))!;
 
-			if (!await userService.CheckUserPermission(_permissionId, context.HttpContext.User.GetUserId()))
+			if (!await userService.CheckUserPermission(_permissionId, context.HttpContext.User.GetUSerNationalCode()))
 			{
 				throw new Exception(StatusCodes.Status403Forbidden.ToString());
 			}

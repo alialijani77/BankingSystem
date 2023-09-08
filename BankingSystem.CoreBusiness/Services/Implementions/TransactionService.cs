@@ -1,19 +1,12 @@
-﻿using BankingSystem.Core.DTOs.ApiResult;
-using BankingSystem.Core.DTOs.Transaction;
+﻿using BankingSystem.Core.DTOs.Transaction;
 using BankingSystem.Core.Extensions;
 using BankingSystem.Core.Statics;
 using BankingSystem.CoreBusiness.Services.Interfaces;
 using BankingSystem.Domain.Entities.Account.Customer;
 using BankingSystem.Domain.Entities.Branch;
 using BankingSystem.Domain.Entities.Transaction;
-using BankingSystem.Domain.Interfaces.GenericRepository;
 using BankingSystem.Infra.Data.Context;
 using BankingSystem.Infra.Data.Repositories.GenericRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingSystem.CoreBusiness.Services.Implementions
 {
